@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Spinner from "../components/Spinner"; 
 
 const Home = () => {
   const [isCreateModelShow, setIsCreateModelShow] = useState(false);
@@ -12,7 +13,8 @@ const Home = () => {
 
   const [isEditModelShow, setIsEditModelShow] = useState(false);
   const username = localStorage.getItem("username");
-    const { api_base_url } = useContext(AppContext);
+  const { api_base_url } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
 
 
   const navigate = useNavigate();
@@ -103,8 +105,15 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getProjects();
-    getRunTimes();
+    const fetchData = async () => {
+      try {
+        await Promise.all([getProjects(), getRunTimes()]);
+      } finally {
+        setLoading(false); // Stop loading once data is fetched
+      }
+    };
+
+    fetchData();
   }, []);
 
   const createProj = () => {
@@ -188,8 +197,14 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="flex items-center px-[100px] justify-between mt-5 text-black">
+    <Navbar />
+    {loading ? (
+      <div className="flex items-center justify-center min-h-screen">
+        <Spinner /> 
+      </div>
+    ) : (
+       <>
+       <div className="flex items-center px-[100px] justify-between mt-5 text-black">
         <h3 className='text-2xl'>👋 Hi,  {username || "Guest"}</h3>
         <div className="flex items-center">
           <button onClick={() => { setIsCreateModelShow(true) }} className="btnNormal bg-blue-500 text-white transition-all hover:bg-blue-600">Create Project</button>
@@ -284,6 +299,8 @@ const Home = () => {
           </div>
         </div>
       }
+       </>
+      )}
     </>
   );
   
