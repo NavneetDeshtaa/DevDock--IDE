@@ -17,8 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const cors = require('cors');
-
 const allowedOrigins = [
   'http://localhost:5173', 
   'https://dev-dock-2xp7h6k57-navneet-deshtas-projects.vercel.app'
