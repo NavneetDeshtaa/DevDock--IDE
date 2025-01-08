@@ -15,10 +15,13 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
 
 const allowedOrigins = [
-  'http://localhost:5173', 
+  'http://localhost:5173',
   'https://dev-dock-2xp7h6k57-navneet-deshtas-projects.vercel.app'
 ];
 
@@ -29,20 +32,30 @@ app.use(cors({
     } else {
       callback(new Error('Not allowed by CORS'));
     }
-  }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
+app.options('*', cors()); // Handle preflight requests
+
 // Routes
-
-
 app.use('/api', indexRouter);
 app.use('/users', usersRouter);
-app.get('/', (req,res) => res.send("API Working"))
 
+app.get('/', (req, res) => {
+  res.json({ message: 'API is working', status: 'success' });
+});
 
 // Error handler
-app.use(function (err, req, res, next) {
-  res.status(err.status || 500).json({ message: err.message });
+app.use((err, req, res, next) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(err.stack);
+    res.status(err.status || 500).json({ message: err.message, stack: err.stack });
+  } else {
+    res.status(err.status || 500).json({ message: 'Internal Server Error' });
+  }
 });
 
 module.exports = app;
