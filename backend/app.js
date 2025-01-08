@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://dev-dock-2xp7h6k57-navneet-deshtas-projects.vercel.app'
+  'https://dev-dock-ide-murex.vercel.app'
 ];
 
 app.use(cors({
