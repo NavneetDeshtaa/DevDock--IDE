@@ -38,7 +38,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.options('*', cors()); // Handle preflight requests
+app.options('*', cors()); 
 
 // Routes
 app.use('/api', indexRouter);
