@@ -16,12 +16,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Allow your frontend origin
-    credentials: true, // Allow cookies and other credentials
-  })
-);
+
+const cors = require('cors');
+
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'https://dev-dock-2xp7h6k57-navneet-deshtas-projects.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 // Routes
 
