@@ -52,21 +52,21 @@ const SignUp = () => {
 
   return (
     <>
-      <h1 className="absolute top-20 left-1/2 transform -translate-x-1/2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-9 whitespace-nowrap hidden sm:block">
-        Login to Innovate, Create, Dominate
+      <h1 className="absolute top-10 left-1/2 transform -translate-x-1/2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 mb-16 whitespace-nowrap hidden sm:block drop-shadow-lg">
+        Sign Up to Innovate, Create, Dominate
       </h1>
-      <div className="con flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#1a1a1a] to-[#333]">
+      <div className="con flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-300">
         <form
           onSubmit={submitForm}
-          className="w-[25vw] h-[auto] flex flex-col items-center bg-[#1c1c1c] p-[25px] rounded-lg shadow-xl shadow-black/50"
+          className="w-[80vw] sm:w-[50vw] md:w-[35vw] lg:w-[25vw] h-auto flex flex-col items-center bg-white p-[25px] rounded-lg shadow-lg border border-gray-300"
         >
           <img
-            className="w-[230px] object-cover mb-6"
+            className="w-[150px] md:w-[200px] lg:w-[230px] object-contain mb-8 rounded-full transition-transform duration-300 hover:scale-105"
             src={logo}
             alt="logo"
           />
 
-          <div className="inputBox w-full mb-4">
+          <div className="inputBox w-full mb-6">
             <input
               onChange={(e) => {
                 setFullName(e.target.value);
@@ -75,11 +75,11 @@ const SignUp = () => {
               type="text"
               placeholder="Full Name"
               required
-              className="w-full p-3 rounded-md bg-[#2a2a2a] text-white placeholder-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full p-3 rounded bg-gray-200 text-gray-800 placeholder-gray-500 border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
             />
           </div>
 
-          <div className="inputBox w-full mb-4">
+          <div className="inputBox w-full mb-6">
             <input
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -88,7 +88,7 @@ const SignUp = () => {
               type="email"
               placeholder="Email"
               required
-              className="w-full p-3 rounded-md bg-[#2a2a2a] text-white placeholder-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full p-3 rounded bg-gray-200 text-gray-800 placeholder-gray-500 border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
             />
           </div>
 
@@ -101,20 +101,20 @@ const SignUp = () => {
               type="password"
               placeholder="Password"
               required
-              className="w-full p-3 rounded-md bg-[#2a2a2a] text-white placeholder-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full p-3 rounded bg-gray-200 text-gray-800 placeholder-gray-500 border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
             />
           </div>
 
-          <p className="text-gray-400 text-[14px] mt-3 self-start">
+          <p className="text-gray-600 text-[14px] mt-3 self-start">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-500">
+            <Link to="/login" className="text-blue-500 hover:underline">
               Login
             </Link>
           </p>
 
           <button
             type="submit"
-            className="btnNormal mt-5 bg-blue-500 text-white py-2 px-6 rounded-lg transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center justify-center"
+            className="btnNormal mt-6 bg-blue-500 text-white py-3 px-8 rounded-md transition-all duration-300 hover:bg-blue-600 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
             disabled={isLoading} 
           >
             {isLoading ? <Spinner /> : "Sign Up"}
@@ -123,6 +123,7 @@ const SignUp = () => {
       </div>
     </>
   );
+
 };
 
 export default SignUp;
