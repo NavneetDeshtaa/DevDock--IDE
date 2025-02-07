@@ -1,102 +1,118 @@
+import { Code2 } from 'lucide-react';
 import React, { useState, useContext } from 'react';
-import logo from "../images/logos/logo.png";
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AppContext } from "../context/AppContext";
 import axios from 'axios';
 import Spinner from '../components/Spinner';
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
-  const [loading, setLoading] = useState(false); 
-  const { api_base_url } = useContext(AppContext);
-
-  const submitForm = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        `${api_base_url}/api/login`,
-        {
-          email: email,
-          pwd: pwd
-        },
-        {
-          headers: {
-            "Content-Type": "application/json"
+function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false); 
+    const { api_base_url } = useContext(AppContext);
+  
+    const submitForm = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+  
+      try {
+        const response = await axios.post(
+          `${api_base_url}/api/login`,
+          {
+            email: email,
+            password: password
+          },
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
+        );
+  
+        const data = response.data;
+  
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("isLoggedIn", true);
+          localStorage.setItem("username", data.fullName);
+  
+          toast.success("Logged in successfully!");
+          window.location.href = "/";
+        } else {
+          toast.error(data.msg);
         }
-      );
-
-      const data = response.data;
-
-      if (data.success) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("isLoggedIn", true);
-        localStorage.setItem("username", data.fullName);
-
-        toast.success("Logged in successfully!");
-        window.location.href = "/";
-      } else {
-        toast.error(data.msg);
+      } catch (error) {
+        console.error("Error during login:", error);
+        toast.error("An error occurred during login.");
+      } finally {
+        setLoading(false); 
       }
-    } catch (error) {
-      console.error("Error during login:", error);
-      toast.error("An error occurred during login.");
-    } finally {
-      setLoading(false); 
-    }
-  };
+    };
 
   return (
-    <>
-      <h1 className="absolute top-20 left-1/2 transform -translate-x-1/2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 whitespace-nowrap hidden sm:block drop-shadow-lg">
-        Login to Innovate, Create, Dominate
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <Code2 size={40} className="text-blue-600" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Login to Innovate, Create, Dominate
+          </h1>
+          <p className="text-gray-600">Enter your details to access your account</p>
+        </div>
 
-      <div className="con flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-300">
-        <form onSubmit={submitForm} className='w-[80vw] sm:w-[50vw] md:w-[35vw] lg:w-[25vw] h-auto flex flex-col items-center bg-white p-[25px] rounded-lg shadow-lg border border-gray-300'>
-          <img className='w-[150px] md:w-[200px] lg:w-[230px] object-contain mb-8 rounded-full transition-transform duration-300 hover:scale-105' src={logo} alt="logo" />
+        <form onSubmit={submitForm} className="space-y-6">
 
-          <div className="inputBox w-full mb-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
             <input
-              onChange={(e) => { setEmail(e.target.value) }}
-              value={email}
+              id="email"
               type="email"
-              placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              placeholder="Enter your email"
               required
-              className="w-full p-3 rounded bg-gray-200 text-gray-800 placeholder-gray-500 border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
             />
           </div>
 
-          <div className="inputBox w-full mb-6">
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
             <input
-              onChange={(e) => { setPwd(e.target.value) }}
-              value={pwd}
+              id="password"
               type="password"
-              placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              placeholder="Enter your password"
               required
-              className="w-full p-3 rounded bg-gray-200 text-gray-800 placeholder-gray-500 border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
             />
           </div>
-
-          <p className='text-gray-600 text-[14px] mt-3 self-start'>Don't have an account? <Link to="/signUp" className='text-blue-500 hover:underline'>Sign Up</Link></p>
 
           <button
             type="submit"
-            className="btnNormal mt-6 bg-blue-500 text-white py-3 px-8 rounded-md transition-all duration-300 hover:bg-blue-600 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
+            className="w-full bg-blue-600 text-white rounded-lg py-3 font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             disabled={loading} 
           >
             {loading ? <Spinner /> : "Login"}
           </button>
         </form>
+
+        <p className="mt-6 text-center text-gray-600">
+          Don't have an account?{' '}
+          <Link to="/signUp" className="text-blue-600 hover:text-blue-700 font-medium">
+            Sign Up
+          </Link>
+        </p>
       </div>
-    </>
+    </div>
   );
-
-
-};
+}
 
 export default Login;
