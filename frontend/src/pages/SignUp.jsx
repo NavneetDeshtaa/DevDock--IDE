@@ -9,7 +9,7 @@ import Spinner from "../components/Spinner";
 function Signup() {
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [pwd, setPwd] = useState("");
     const [isLoading, setIsLoading] = useState(false); 
   
     const { api_base_url } = useContext(AppContext);
@@ -102,8 +102,8 @@ function Signup() {
             <input
               id="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={pwd}
+              onChange={(e) => setPwd(e.target.value)}
               className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
               placeholder="Create a password"
               required
