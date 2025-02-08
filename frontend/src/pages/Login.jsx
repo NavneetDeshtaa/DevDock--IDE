@@ -1,4 +1,4 @@
-import { Code2 } from 'lucide-react';
+import { Code2, Terminal, Monitor } from "lucide-react";
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -51,7 +51,19 @@ function Login() {
     };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+
+<div className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e2e8f0] flex items-center justify-center p-4 relative">
+
+      <div className="absolute top-10 left-10 flex items-center space-x-4 text-gray-700">
+        <Terminal size={50} className="text-gray-500" />
+        <h2 className="text-xl font-semibold">Your NextGen Code Playground</h2>
+      </div>
+
+      <div className="absolute bottom-10 right-10 flex items-center space-x-4 text-gray-700">
+    <Monitor size={50} className="text-gray-500" />
+    <h3 className="text-lg font-medium">Code. Debug. Deploy.</h3>
+  </div>
+
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
@@ -64,7 +76,6 @@ function Login() {
         </div>
 
         <form onSubmit={submitForm} className="space-y-6">
-
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email
@@ -98,7 +109,7 @@ function Login() {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white rounded-lg py-3 font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            disabled={loading} 
+            disabled={loading}
           >
             {loading ? <Spinner /> : "Login"}
           </button>
