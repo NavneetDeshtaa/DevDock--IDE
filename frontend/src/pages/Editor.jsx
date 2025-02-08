@@ -1,150 +1,224 @@
-import React, { useEffect, useState,useContext } from 'react';
-import Editor2 from '@monaco-editor/react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext, useCallback } from "react";
+import Editor2 from "@monaco-editor/react";
+import { useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
-import { toast } from 'react-toastify';
-import EditiorNavbar from '../components/EditorNavbar';
+import { Play, Code, Loader2 } from "lucide-react";
+import { toast } from "react-toastify";
+import EditorNavbar from "../components/EditorNavbar";
 
 const Editor = () => {
-  const [code, setCode] = useState(""); 
-  const { id } = useParams(); 
+  const [code, setCode] = useState("");
+  const [editorWidth, setEditorWidth] = useState(50);
+  const [isRunning, setIsRunning] = useState(false);
   const [output, setOutput] = useState("");
   const [error, setError] = useState(false);
-  const { api_base_url } = useContext(AppContext);
-
   const [data, setData] = useState(null);
 
+  const { id } = useParams();
+  const { api_base_url } = useContext(AppContext);
+
+  // Fetch Project Data
   useEffect(() => {
-    fetch(`${api_base_url}/api/getProject`, {
-      mode: 'cors',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: localStorage.getItem('token'),
-        projectId: id,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setCode(data.project.code); 
-          setData(data.project);
+    const fetchProject = async () => {
+      try {
+        const response = await fetch(`${api_base_url}/api/getProject`, {
+          mode: "cors",
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: localStorage.getItem("token"),
+            projectId: id,
+          }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          setCode(result.project.code || "");
+          setData(result.project);
         } else {
-          toast.error(data.msg);
+          toast.error(result.msg);
         }
-      })
-      .catch((err) => {
-        console.error('Error fetching project:', err);
-        toast.error('Failed to load project.');
-      });
-  }, [id]);
+      } catch (err) {
+        console.error("Error fetching project:", err);
+        toast.error("Failed to load project.");
+      }
+    };
 
+    fetchProject();
+  }, [id, api_base_url]);
 
-  const saveProject = () => {
-    const trimmedCode = code?.toString().trim(); 
-    console.log('Saving code:', trimmedCode); 
+  // Save Project
+  const saveProject = useCallback(() => {
+    if (!code) return;
 
     fetch(`${api_base_url}/api/saveProject`, {
-      mode: 'cors',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      mode: "cors",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem("token"),
         projectId: id,
-        code: trimmedCode, 
+        code: code.trim(),
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) {
-          toast.success(data.msg);
-        } else {
-          toast.error(data.msg);
-        }
+        data.success ? toast.success(data.msg) : toast.error(data.msg);
       })
       .catch((err) => {
-        console.error('Error saving project:', err);
-        toast.error('Failed to save the project.');
+        console.error("Error saving project:", err);
+        toast.error("Failed to save the project.");
       });
-  };
+  }, [code, id, api_base_url]);
 
- 
-  const handleSaveShortcut = (e) => {
-    if (e.ctrlKey && e.key === 's') {
-      e.preventDefault(); 
-      saveProject(); 
-    }
-  };
-
-
+  // Handle Save Shortcut (Ctrl + S)
   useEffect(() => {
-    window.addEventListener('keydown', handleSaveShortcut);
-    return () => {
-      window.removeEventListener('keydown', handleSaveShortcut);
+    const handleSaveShortcut = (e) => {
+      if (e.ctrlKey && e.key === "s") {
+        e.preventDefault();
+        saveProject();
+      }
     };
-  }, [code]); 
 
-  const runProject = () => {
-    fetch("https://emkc.org/api/v2/piston/execute", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        language: data.projLanguage,
-        version: data.version,
-        files: [
-          {
-            filename: data.name + data.projLanguage === "python" ? ".py" : data.projLanguage === "java" ? ".java" : data.projLanguage === "javascript" ? ".js" : data.projLanguage === "c" ? ".c" : data.projLanguage === "cpp" ? ".cpp" : data.projLanguage === "bash" ? ".sh" : "",
-            content: code
-          }
-        ]
-      })
-    }).then(res => res.json()).then(data => {
-      console.log(data)
-      setOutput(data.run.output);
-      setError(data.run.code === 1 ? true : false);
-    })
-  }
+    window.addEventListener("keydown", handleSaveShortcut);
+    return () => window.removeEventListener("keydown", handleSaveShortcut);
+  }, [saveProject]);
+
+  // Run Code Execution
+  const runProject = async () => {
+    if (!data?.projLanguage || !data?.version) {
+      toast.error("Invalid project settings.");
+      return;
+    }
+
+    setIsRunning(true);
+    try {
+      const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          language: data.projLanguage,
+          version: data.version,
+          files: [
+            {
+              filename: `${data.name}.${getFileExtension(data.projLanguage)}`,
+              content: code,
+            },
+          ],
+        }),
+      });
+
+      const result = await response.json();
+      setOutput(result.run.output || "Execution completed with no output.");
+      setError(result.run.code === 1);
+    } catch (err) {
+      console.error("Error running project:", err);
+      setOutput("An error occurred while running the code.");
+      setError(true);
+    }
+    setIsRunning(false);
+  };
+
+  // Get File Extension Based on Language
+  const getFileExtension = (language) => {
+    const extensions = {
+      python: "py",
+      java: "java",
+      javascript: "js",
+      c: "c",
+      cpp: "cpp",
+      bash: "sh",
+    };
+    return extensions[language] || "";
+  };
 
   return (
     <>
-      <EditiorNavbar projectName={data?.name} editorContent={code} />
-      <div className="flex items-center justify-between" style={{ height: 'calc(100vh - 90px)', backgroundColor: '#f9f9f9' }}>
+      <EditorNavbar projectName={data?.name} editorContent={code} />
+      <div
+        className="flex items-center bg-gray-100"
+        style={{ height: "calc(100vh - 90px)" }}
+      >
         {/* Left Section - Code Editor */}
-        <div className="left w-[50%] h-full">
+        <div
+          className="h-full p-6 bg-white rounded-lg shadow-lg border border-gray-300"
+          style={{ width: `${editorWidth}%` }}
+        >
+          <div className="flex items-center justify-between pb-4 border-b border-gray-300">
+            <div className="flex-grow flex justify-center">
+              <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                <Code size={20} /> Code Editor
+              </h2>
+            </div>
+          </div>
+
           <Editor2
-            onChange={(newCode) => {
-              setCode(newCode || ''); 
-            }}
-            theme="vs-dark"
+            onChange={(newCode) => setCode(newCode || "")}
+            theme="light"
             height="100%"
             width="100%"
-            language="python"
-            value={code} 
+            language={data?.projLanguage}
+            value={code}
           />
         </div>
 
+        {/* Resizable Divider */}
+        <div
+          className="w-2 h-full bg-gray-400 cursor-col-resize"
+          onMouseDown={(e) => {
+            const startX = e.clientX;
+            const startWidth = editorWidth;
+
+            const onMouseMove = (e) => {
+              const newWidth = Math.max(
+                20,
+                Math.min(
+                  80,
+                  startWidth + ((e.clientX - startX) / window.innerWidth) * 100
+                )
+              );
+              setEditorWidth(newWidth);
+            };
+
+            const onMouseUp = () => {
+              window.removeEventListener("mousemove", onMouseMove);
+              window.removeEventListener("mouseup", onMouseUp);
+            };
+
+            window.addEventListener("mousemove", onMouseMove);
+            window.addEventListener("mouseup", onMouseUp);
+          }}
+        ></div>
+
         {/* Right Section - Output */}
-        <div className="right p-[20px] w-[50%] h-full bg-white rounded-lg shadow-md border border-gray-200">
-          <div className="flex pb-3 border-b-[1px] border-b-[#e1e1e1] items-center justify-between px-[30px]">
-            <p className="text-lg font-semibold">Output</p>
+        <div
+          className="h-full p-6 bg-white rounded-lg shadow-lg border border-gray-300"
+          style={{ width: `${100 - editorWidth}%` }}
+        >
+          <div className="flex pb-4 border-b border-gray-300 items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+              <Play size={20} /> Output
+            </h2>
             <button
-              className="btnNormal !w-fit !px-[20px] bg-blue-500 text-white transition-all hover:bg-blue-600 rounded-md"
+              className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md shadow-md transition-all hover:bg-blue-700"
               onClick={runProject}
+              disabled={isRunning}
             >
+              {isRunning ? (
+                <Loader2 className="animate-spin" size={18} />
+              ) : (
+                <Play size={18} />
+              )}{" "}
               Run
             </button>
           </div>
           <pre
-            className={`w-full h-[75vh] mt-4 p-4 rounded-lg bg-[#f0f0f0] border border-[#e1e1e1] ${error ? 'text-red-500' : 'text-black'}`}
-            style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+            className={`w-full h-full mt-4 p-5 rounded-lg bg-gray-100 border border-gray-300 text-sm overflow-auto ${
+              error ? "text-red-500" : "text-gray-800"
+            }`}
+            style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
           >
-            {output || 'Your output will appear here...'}
+            {output || "Your output will appear here..."}
           </pre>
         </div>
       </div>

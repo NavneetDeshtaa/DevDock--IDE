@@ -6,6 +6,8 @@ import NoPage from './pages/NoPage';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Editor from './pages/Editor';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const RouteHandler = () => {
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/editior/:id" element={isLoggedIn ? <Editor /> : <Navigate to={"/login"}/>} />
+        <Route path="/about" element={isLoggedIn ? <About /> : <Navigate to={"/login"}/>} />
+        <Route path="/contact" element={isLoggedIn ? <Contact/> : <Navigate to={"/login"}/>} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </>

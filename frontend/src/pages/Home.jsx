@@ -203,103 +203,148 @@ const Home = () => {
         <Spinner /> 
       </div>
     ) : (
-       <>
-       <div className="flex items-center px-[100px] justify-between mt-5 text-black">
-        <h3 className='text-2xl'>👋 Hi,  {username || "Guest"}</h3>
-        <div className="flex items-center">
-          <button onClick={() => { setIsCreateModelShow(true) }} className="btnNormal bg-blue-500 text-white transition-all hover:bg-blue-600">Create Project</button>
-        </div>
-      </div>
-  
-      <div className="projects px-[100px] mt-5 pb-10">
-        {
-          projects && projects.length > 0 ? projects.map((project, index) => {
-            return (
-              <div key={index} className="project w-full p-[15px] flex items-center justify-between bg-white text-black border border-gray-200 rounded-lg shadow-sm mb-4 hover:bg-gray-100">
-                <div onClick={() => { navigate("/editior/" + project._id) }} className='flex w-full items-center gap-[15px]'>
-                  {
-                    project.projLanguage === "python" ? (
-                      <img className='w-[130px] h-[100px] object-cover' src="https://images.ctfassets.net/em6l9zw4tzag/oVfiswjNH7DuCb7qGEBPK/b391db3a1d0d3290b96ce7f6aacb32b0/python.png" alt="" />
-                    ) : project.projLanguage === "javascript" ? (
-                      <img className='w-[130px] h-[100px] object-cover' src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="" />
-                    ) : project.projLanguage === "cpp" ? (
-                      <img className='w-[130px] h-[100px] object-cover' src="https://upload.wikimedia.org/wikipedia/commons/3/32/C%2B%2B_logo.png" alt="" />
-                    ) : project.projLanguage === "c" ? (
-                      <img className='w-[130px] h-[100px] object-cover' src="https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png" alt="" />
-                    ) : project.projLanguage === "java" ? (
-                      <img className='w-[130px] h-[100px] object-cover' src="https://static-00.iconduck.com/assets.00/java-icon-1511x2048-6ikx8301.png" alt="" />
-                    ) : project.projLanguage === "bash" ? (
-                      <img className='w-[130px] h-[100px] object-cover' src="https://w7.pngwing.com/pngs/48/567/png-transparent-bash-shell-script-command-line-interface-z-shell-shell-rectangle-logo-commandline-interface-thumbnail.png" alt="" />
-                    ) : ""
-                  }
-                  <div>
-                    <h3 className='text-xl'>{project.name}</h3>
-                    <p className='text-[14px] text-gray-500'> Created on- {new Date(project.date).toDateString()}</p>
-                  </div>
-                </div>
-  
-                <div className="flex items-center gap-[15px]">
-                  <button className="btnNormal bg-blue-500 text-white transition-all hover:bg-blue-600" onClick={() => {
-                    setIsEditModelShow(true);
-                    setEditProjId(project._id);
-                    setName(project.name);
-                  }}>Edit</button>
-                  <button onClick={() => { deleteProject(project._id) }} className="btnNormal bg-red-500 text-white transition-all hover:bg-red-600">Delete</button>
-                </div>
-              </div>
-            )
-          }) : "No Project Found!"
-        }
-      </div>
-  
-      {isCreateModelShow &&
-        <div onClick={(e) => {
-          if (e.target.classList.contains("modelCon")) {
-            setIsCreateModelShow(false);
-            setName("");
-          }
-        }} className='modelCon flex flex-col items-center justify-center w-screen h-screen fixed top-0 left-0 bg-[rgba(0,0,0,0.5)]'>
-          <div className="modelBox flex flex-col items-start rounded-xl p-[20px] w-[25vw] h-[auto] bg-white text-black shadow-lg">
-            <h3 className='text-xl font-bold text-center'>Create Project</h3>
-            <div className="inputBox">
-              <input onChange={(e) => { setName(e.target.value) }} value={name} type="text" placeholder='Enter your project name' className="text-black border p-2 rounded bg-white" />
-            </div>
-            <Select
-              placeholder="Select a Language"
-              options={languageOptions}
-              styles={customStyles}
-              onChange={handleLanguageChange}
+      <>
+  {/* Greeting & Create Button */}
+  <div className="flex items-center px-10 md:px-20 justify-between mt-6 text-black">
+    <h3 className="text-2xl font-semibold">
+      👋 Hi, {username || "Guest"}! <span className="text-gray-500 text-lg">Ready to code today?</span>
+    </h3>
+    <button
+      onClick={() => setIsCreateModelShow(true)}
+      className="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium transition-all hover:bg-blue-700 shadow-md"
+    >
+    Create New Project<span className="text-white">➕</span>
+    </button>
+  </div>
+
+  {/* Project List */}
+  <div className="projects px-10 md:px-20 mt-6 pb-10">
+    {projects && projects.length > 0 ? (
+      projects.map((project, index) => (
+        <div
+          key={index}
+          className="project flex items-center justify-between p-4 bg-white text-black border border-gray-200 rounded-lg shadow-sm mb-4 hover:shadow-lg transition-all"
+        >
+          {/* Project Info */}
+          <div
+            onClick={() => navigate("/editior/" + project._id)}
+            className="flex w-full items-center gap-4 cursor-pointer"
+          >
+            {/* Project Language Icon */}
+            <img
+              className="w-20 h-16 object-cover rounded-md"
+              src={
+                project.projLanguage === "python"
+                  ? "https://images.ctfassets.net/em6l9zw4tzag/oVfiswjNH7DuCb7qGEBPK/b391db3a1d0d3290b96ce7f6aacb32b0/python.png"
+                  : project.projLanguage === "javascript"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png"
+                  : project.projLanguage === "cpp"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/3/32/C%2B%2B_logo.png"
+                  : project.projLanguage === "c"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png"
+                  : project.projLanguage === "java"
+                  ? "https://static-00.iconduck.com/assets.00/java-icon-1511x2048-6ikx8301.png"
+                  : project.projLanguage === "bash"
+                  ? "https://w7.pngwing.com/pngs/48/567/png-transparent-bash-shell-script-command-line-interface-z-shell-shell-rectangle-logo-commandline-interface-thumbnail.png"
+                  : ""
+              }
+              alt="Project Language"
             />
-            {selectedLanguage && (
-              <>
-                <p className="text-[14px] text-green-500 mt-2">
-                  Selected Language: {selectedLanguage.label}
-                </p>
-                <button onClick={createProj} className="btnNormal bg-blue-500 text-white transition-all hover:bg-blue-600 mt-2">Create</button>
-              </>
-            )}
-          </div>
-        </div>
-      }
-  
-      {isEditModelShow &&
-        <div onClick={(e) => {
-          if (e.target.classList.contains("modelCon")) {
-            setIsEditModelShow(false);
-            setName("");
-          }
-        }} className='modelCon flex flex-col items-center justify-center w-screen h-screen fixed top-0 left-0 bg-[rgba(0,0,0,0.5)]'>
-          <div className="modelBox flex flex-col items-start rounded-xl p-[20px] w-[25vw] h-[auto] bg-white text-black shadow-lg">
-            <h3 className='text-xl font-bold text-center'>Update Project</h3>
-            <div className="inputBox">
-              <input onChange={(e) => { setName(e.target.value) }} value={name} type="text" placeholder='Enter your project name' className="text-black border p-2 rounded bg-white" />
+
+            {/* Project Name & Date */}
+            <div>
+              <h3 className="text-lg font-semibold">{project.name}</h3>
+              <p className="text-sm text-gray-500">Created on: {new Date(project.date).toDateString()}</p>
             </div>
-  
-            <button onClick={updateProj} className="btnNormal bg-blue-500 text-white transition-all hover:bg-blue-600 mt-2">Update</button>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-4">
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium transition-all hover:bg-blue-600 shadow"
+              onClick={() => {
+                setIsEditModelShow(true);
+                setEditProjId(project._id);
+                setName(project.name);
+              }}
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => deleteProject(project._id)}
+              className="px-4 py-2 bg-red-500 text-white rounded-md font-medium transition-all hover:bg-red-600 shadow"
+            >
+              Delete
+            </button>
           </div>
         </div>
-      }
-       </>
+      ))
+    ) : (
+      <p className="text-gray-500 text-center mt-4">No Projects Found!</p>
+    )}
+  </div>
+
+  {/* Create Project Modal */}
+  {isCreateModelShow && (
+    <div
+      onClick={(e) => {
+        if (e.target.classList.contains("modalContainer")) {
+          setIsCreateModelShow(false);
+          setName("");
+        }
+      }}
+      className="modalContainer flex items-center justify-center fixed inset-0 bg-black bg-opacity-50"
+    >
+      <div className="modalBox p-6 w-96 bg-white rounded-xl shadow-lg">
+        <h3 className="text-lg font-semibold text-center mb-4">Create Project</h3>
+        <input
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+          type="text"
+          placeholder="Enter project name"
+          className="w-full p-2 border rounded-md mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <Select placeholder="Select a Language" options={languageOptions} styles={customStyles} onChange={handleLanguageChange} />
+        {selectedLanguage && (
+          <>
+            <p className="text-sm text-green-600 mt-2">Selected Language: {selectedLanguage.label}</p>
+            <button onClick={createProj} className="w-full mt-3 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-all">
+            ✅ Create
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  )}
+
+  {/* Edit Project Modal */}
+  {isEditModelShow && (
+    <div
+      onClick={(e) => {
+        if (e.target.classList.contains("modalContainer")) {
+          setIsEditModelShow(false);
+          setName("");
+        }
+      }}
+      className="modalContainer flex items-center justify-center fixed inset-0 bg-black bg-opacity-50"
+    >
+      <div className="modalBox p-6 w-96 bg-white rounded-xl shadow-lg">
+        <h3 className="text-lg font-semibold text-center mb-4">Update Project</h3>
+        <input
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+          type="text"
+          placeholder="Enter project name"
+          className="w-full p-2 border rounded-md mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button onClick={updateProj} className="w-full px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-all">
+        🔄Update
+        </button>
+      </div>
+    </div>
+  )}
+      </>
+
       )}
     </>
   );
