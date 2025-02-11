@@ -38,13 +38,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-
 app.use('/api', indexRouter);
 app.use('/users', usersRouter);
 
-
 app.get('/', (req, res) => res.send('API Working'));
-
 
 app.use(function (err, req, res, next) {
   if (process.env.NODE_ENV === 'development') {

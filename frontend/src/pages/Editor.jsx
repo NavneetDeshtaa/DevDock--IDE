@@ -17,7 +17,6 @@ const Editor = () => {
   const { id } = useParams();
   const { api_base_url } = useContext(AppContext);
 
-  // Fetch Project Data
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -47,7 +46,7 @@ const Editor = () => {
     fetchProject();
   }, [id, api_base_url]);
 
-  // Save Project
+
   const saveProject = useCallback(() => {
     if (!code) return;
 
@@ -71,7 +70,6 @@ const Editor = () => {
       });
   }, [code, id, api_base_url]);
 
-  // Handle Save Shortcut (Ctrl + S)
   useEffect(() => {
     const handleSaveShortcut = (e) => {
       if (e.ctrlKey && e.key === "s") {
@@ -84,7 +82,7 @@ const Editor = () => {
     return () => window.removeEventListener("keydown", handleSaveShortcut);
   }, [saveProject]);
 
-  // Run Code Execution
+
   const runProject = async () => {
     if (!data?.projLanguage || !data?.version) {
       toast.error("Invalid project settings.");
@@ -119,7 +117,6 @@ const Editor = () => {
     setIsRunning(false);
   };
 
-  // Get File Extension Based on Language
   const getFileExtension = (language) => {
     const extensions = {
       python: "py",
@@ -139,7 +136,7 @@ const Editor = () => {
         className="flex items-center bg-gray-100"
         style={{ height: "calc(100vh - 90px)" }}
       >
-        {/* Left Section - Code Editor */}
+     
         <div
           className="h-full p-6 bg-white rounded-lg shadow-lg border border-gray-300"
           style={{ width: `${editorWidth}%` }}
@@ -162,7 +159,7 @@ const Editor = () => {
           />
         </div>
 
-        {/* Resizable Divider */}
+    
         <div
           className="w-2 h-full bg-gray-400 cursor-col-resize"
           onMouseDown={(e) => {
@@ -190,7 +187,7 @@ const Editor = () => {
           }}
         ></div>
 
-        {/* Right Section - Output */}
+    
         <div
           className="h-full p-6 bg-white rounded-lg shadow-lg border border-gray-300"
           style={{ width: `${100 - editorWidth}%` }}

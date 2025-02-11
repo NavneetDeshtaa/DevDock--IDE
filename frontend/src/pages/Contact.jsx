@@ -28,10 +28,10 @@ function Contact() {
 
     emailjs
       .send(
-        "service_zpsbxfj",  // Replace with your EmailJS Service ID
-        "template_ghwfskl",  // Replace with your EmailJS Template ID
+        "service_zpsbxfj",  
+        "template_ghwfskl",  
         formData,
-        "8r01TNHoIxyu8rFCI"    // Replace with your EmailJS Public Key
+        "8r01TNHoIxyu8rFCI"  
       )
       .then(
         (response) => {
@@ -59,7 +59,7 @@ function Contact() {
         </header>
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Contact Information */}
+      
           <div className="bg-white rounded-xl shadow-md p-6">
             <h2 className="text-3xl font-semibold text-gray-900 mb-4">Get in Touch</h2>
             <div className="space-y-4 text-lg">
@@ -90,7 +90,7 @@ function Contact() {
             </div>
           </div>
 
-          {/* Contact Form */}
+      
           <div className="bg-white rounded-xl shadow-md p-6">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Send Us a Message</h2>
             {successMessage && <p className="text-green-600 text-sm mb-4">{successMessage}</p>}
