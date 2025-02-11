@@ -23,14 +23,6 @@ download functionality, allowing users to code in up to 7 programming languages.
 ## Demo
 
 https://dev-dock-ide-murex.vercel.app
-## Installation
-
-Install my-project with npm
-
-```bash
-  npm install my-project
-  cd my-project
-```
     
 ## Run Locally
 
