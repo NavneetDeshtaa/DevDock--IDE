@@ -31,7 +31,7 @@ function Login() {
         localStorage.setItem("username", response.data.fullName);
 
         toast.success("Logged in successfully!");
-        window.location.href = "/";
+        window.location.href = "/projects";
       } else {
         toast.error(response.data.msg);
       }
