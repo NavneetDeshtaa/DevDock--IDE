@@ -5,6 +5,7 @@ import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Spinner from "../components/Spinner";
+import { ArrowLeft } from "lucide-react";
 
 function Signup() {
   const [fullName, setFullName] = useState("");
@@ -108,17 +109,27 @@ function Signup() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#eef2ff] to-[#c7d2fe] flex items-center justify-center p-6 relative">
-      <div className="absolute top-10 left-10 flex items-center space-x-4 text-gray-700">
+
+          {/* Back Button */}
+      <button
+        onClick={() => navigate('/')} 
+        className="absolute top-10 left-10 flex items-center space-x-4 text-gray-700 bg-white p-2 rounded-lg shadow-md"
+      >
+        <ArrowLeft size={24} className="text-gray-500" />
+        <span className="text-gray-700">Back</span>
+      </button>
+
+      <div className="absolute top-11 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 text-gray-700 mb-9">
         <Terminal size={50} className="text-gray-500" />
-        <h2 className="text-xl font-semibold">Your NextGen Code Playground</h2>
+        <h2 className="text-2xl font-semibold">Your NextGen Code Playground</h2>
       </div>
 
       <div className="absolute bottom-10 right-10 flex items-center space-x-4 text-gray-700">
         <Monitor size={50} className="text-gray-500" />
-        <h3 className="text-lg font-medium">Code. Debug. Deploy.</h3>
+        <h3 className="text-3xl font-medium">Code. Debug. Deploy.</h3>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-10">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-10 mt-7">
         <div className="text-center mb-6">
           <div className="flex justify-center mb-4">
             <Code2 size={40} className="text-blue-600" />

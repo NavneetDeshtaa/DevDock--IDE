@@ -1,3 +1,140 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      filter: brightness(100%);
+    }
+    50% {
+      opacity: 0.8;
+      filter: brightness(150%);
+    }
+  }
+  
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  @keyframes scale-up {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  @keyframes number-increment {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100%);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 1s ease-out;
+  }
+  
+  .animate-slide-in {
+    animation: slide-in 0.8s ease-out;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 5s ease infinite;
+  }
+  
+  .animate-scale-up {
+    animation: scale-up 0.5s ease-out;
+  }
+  
+  .typing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end);
+  }
+  
+  .number-scroll {
+    animation: number-increment 2s steps(10) infinite;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
+  }
+  
+  .feature-card {
+    transition: all 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  
+  .gradient-text {
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 200% 200%;
+    animation: gradient-shift 5s ease infinite;
+  }

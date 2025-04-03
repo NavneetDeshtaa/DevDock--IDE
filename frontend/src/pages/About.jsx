@@ -53,7 +53,7 @@ const About = () => {
         {/* Call to Action */}
         <div className="text-center mt-10">
           <Link to="/" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-md transition-all">
-            Get Started with DevDock
+            Get Started with Your Project.
           </Link>
         </div>
       </section>

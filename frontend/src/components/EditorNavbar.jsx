@@ -23,7 +23,7 @@ const EditorNavbar = ({ projectName, editorContent }) => {
     <nav className="flex items-center justify-between px-10 md:px-20 h-16 bg-white shadow-md border-b">
       {/* Back Button */}
       <button
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/projects")}
         className="flex items-center gap-2 px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition"
       >
         <IoIosArrowBack className="text-xl" />

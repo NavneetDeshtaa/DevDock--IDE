@@ -15,6 +15,7 @@ const Home = () => {
   const username = localStorage.getItem("username");
   const { api_base_url } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
+  const isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) || false;
 
   const navigate = useNavigate();
 
@@ -205,10 +206,10 @@ const Home = () => {
         <div className="flex items-center justify-center min-h-screen">
           <Spinner />
         </div>
-      ) : (
+      ) : isLoggedIn ? (
         <>
           {/* Greeting & Create Button */}
-          <div className="flex items-center px-10 md:px-20 justify-between mt-6 text-black">
+          <div className="flex items-center px-10 md:px-20 justify-between mt-6 text-black pt-20">
             <h3 className="text-2xl font-semibold">
               👋 Hi, {username || "Guest"}!{" "}
               <span className="text-gray-500 text-lg">
@@ -222,7 +223,6 @@ const Home = () => {
               Create New Project<span className="text-white">➕</span>
             </button>
           </div>
-
           {/* Project List */}
           <div className="projects px-10 md:px-20 mt-6 pb-10">
             {projects && projects.length > 0 ? (
@@ -371,6 +371,23 @@ const Home = () => {
             </div>
           )}
         </>
+      ) : (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-6">
+          <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-200 text-center max-w-md">
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Access Restricted
+            </h2>
+            <p className="text-gray-600 mt-2">
+              Please log in to create and manage your projects.
+            </p>
+            <button
+              onClick={() => navigate("/login")}
+              className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium transition-all hover:bg-blue-700 shadow-md"
+            >
+              🔑 Log In / Sign up
+            </button>
+          </div>
+        </div>
       )}
     </>
   );
