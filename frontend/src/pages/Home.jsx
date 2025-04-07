@@ -53,27 +53,31 @@ const Home = () => {
   };
 
   const getRunTimes = async () => {
-    let res = await fetch("https://emkc.org/api/v2/piston/runtimes");
-    let data = await res.json();
+    try {
+      let res = await fetch("https://emkc.org/api/v2/piston/runtimes");
+      let data = await res.json();
 
-    const filteredLanguages = [
-      "python",
-      "javascript",
-      "c",
-      "c++",
-      "java",
-      "bash",
-    ];
+      const filteredLanguages = [
+        "python",
+        "javascript",
+        "c",
+        "c++",
+        "java",
+        "bash",
+      ];
 
-    const options = data
-      .filter((runtime) => filteredLanguages.includes(runtime.language))
-      .map((runtime) => ({
-        label: `${runtime.language} (${runtime.version})`,
-        value: runtime.language === "c++" ? "cpp" : runtime.language,
-        version: runtime.version,
-      }));
+      const options = data
+        .filter((runtime) => filteredLanguages.includes(runtime.language))
+        .map((runtime) => ({
+          label: `${runtime.language} (${runtime.version})`,
+          value: runtime.language === "c++" ? "cpp" : runtime.language,
+          version: runtime.version,
+        }));
 
-    setLanguageOptions(options);
+      setLanguageOptions(options);
+    } catch (error) {
+      toast.error("Failed to fetch runtimes");
+    }
   };
 
   const handleLanguageChange = (selectedOption) => {
@@ -81,24 +85,26 @@ const Home = () => {
   };
 
   const getProjects = async () => {
-    fetch(api_base_url + "/api/getProjects", {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: localStorage.getItem("token"),
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setProjects(data.projects);
-        } else {
-          toast.error(data.msg);
-        }
+    try {
+      const res = await fetch(api_base_url + "/api/getProjects", {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: localStorage.getItem("token"),
+        }),
       });
+      const data = await res.json();
+      if (data.success) {
+        setProjects(data.projects);
+      } else {
+        toast.error(data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to fetch projects");
+    }
   };
 
   useEffect(() => {
@@ -113,87 +119,93 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const createProj = () => {
-    fetch(api_base_url + "/api/createProj", {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name,
-        projLanguage: selectedLanguage.value,
-        token: localStorage.getItem("token"),
-        version: selectedLanguage.version,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setName("");
-          navigate("/editior/" + data.projectId);
-          toast.success("Project Created successfully");
-        } else {
-          toast.error(data.msg);
-        }
-      });
-  };
-
-  const deleteProject = (id) => {
-    let conf = confirm("Are you sure you want to delete this project?");
-    if (conf) {
-      fetch(api_base_url + "/api/deleteProject", {
+  const createProj = async () => {
+    try {
+      const res = await fetch(api_base_url + "/api/createProj", {
         mode: "cors",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          projectId: id,
+          name: name,
+          projLanguage: selectedLanguage.value,
           token: localStorage.getItem("token"),
+          version: selectedLanguage.version,
         }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            getProjects();
-            toast.success("Project Deleted Successfully");
-          } else {
-            toast.error(data.msg);
-          }
-        });
+      });
+      const data = await res.json();
+      if (data.success) {
+        setName("");
+        navigate("/editior/" + data.projectId);
+        toast.success("Project Created successfully");
+      } else {
+        toast.error(data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to create project");
     }
   };
 
-  const updateProj = () => {
-    fetch(api_base_url + "/api/editProject", {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        projectId: editProjId,
-        token: localStorage.getItem("token"),
-        name: name,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
+  const deleteProject = async (id) => {
+    let conf = confirm("Are you sure you want to delete this project?");
+    if (conf) {
+      try {
+        const res = await fetch(api_base_url + "/api/deleteProject", {
+          mode: "cors",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            projectId: id,
+            token: localStorage.getItem("token"),
+          }),
+        });
+        const data = await res.json();
         if (data.success) {
-          setIsEditModelShow(false);
-          setName("");
-          setEditProjId("");
           getProjects();
-          toast.success("Project Updated Successfully");
+          toast.success("Project Deleted Successfully");
         } else {
           toast.error(data.msg);
-          setIsEditModelShow(false);
-          setName("");
-          setEditProjId("");
-          getProjects();
         }
+      } catch (error) {
+        toast.error("Failed to delete project");
+      }
+    }
+  };
+
+  const updateProj = async () => {
+    try {
+      const res = await fetch(api_base_url + "/api/editProject", {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          projectId: editProjId,
+          token: localStorage.getItem("token"),
+          name: name,
+        }),
       });
+      const data = await res.json();
+      if (data.success) {
+        setIsEditModelShow(false);
+        setName("");
+        setEditProjId("");
+        getProjects();
+        toast.success("Project Updated Successfully");
+      } else {
+        toast.error(data.msg);
+        setIsEditModelShow(false);
+        setName("");
+        setEditProjId("");
+        getProjects();
+      }
+    } catch (error) {
+      toast.error("Failed to update project");
+    }
   };
 
   return (
@@ -272,7 +284,7 @@ const Home = () => {
                       className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium transition-all hover:bg-blue-600 shadow"
                       onClick={() => {
                         setIsEditModelShow(true);
-                        setEditProjId(project._id); // Set the project id here
+                        setEditProjId(project._id);
                         setName(project.name);
                       }}
                     >
