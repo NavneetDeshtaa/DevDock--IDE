@@ -10,16 +10,17 @@ const Home = () => {
   const [isCreateModelShow, setIsCreateModelShow] = useState(false);
   const [languageOptions, setLanguageOptions] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
-
+  const [isCreateLoading, setIsCreateLoading] = useState(false);
+  const [isUpdateLoading, setIsUpdateLoading] = useState(false);
   const [isEditModelShow, setIsEditModelShow] = useState(false);
   const username = localStorage.getItem("username");
   const { api_base_url } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
   const isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) || false;
-
   const navigate = useNavigate();
-
   const [name, setName] = useState("");
+  const [projects, setProjects] = useState(null);
+  const [editProjId, setEditProjId] = useState("");
 
   const customStyles = {
     control: (provided) => ({
@@ -79,8 +80,6 @@ const Home = () => {
     setSelectedLanguage(selectedOption);
   };
 
-  const [projects, setProjects] = useState(null);
-
   const getProjects = async () => {
     fetch(api_base_url + "/api/getProjects", {
       mode: "cors",
@@ -133,7 +132,7 @@ const Home = () => {
         if (data.success) {
           setName("");
           navigate("/editior/" + data.projectId);
-          toast.success(" Project Created successfully");
+          toast.success("Project Created successfully");
         } else {
           toast.error(data.msg);
         }
@@ -165,8 +164,6 @@ const Home = () => {
         });
     }
   };
-
-  const [editProjId, setEditProjId] = useState("");
 
   const updateProj = () => {
     fetch(api_base_url + "/api/editProject", {
@@ -209,36 +206,37 @@ const Home = () => {
       ) : isLoggedIn ? (
         <>
           {/* Greeting & Create Button */}
-          <div className="flex items-center px-10 md:px-20 justify-between mt-6 text-black pt-20">
-            <h3 className="text-2xl font-semibold">
+          <div className="flex flex-col md:flex-row items-start md:items-center px-6 sm:px-10 md:px-20 justify-between mt-6 text-black pt-20 gap-4">
+            <h3 className="text-xl sm:text-2xl font-semibold">
               👋 Hi, {username || "Guest"}!{" "}
-              <span className="text-gray-500 text-lg">
+              <span className="text-gray-500 text-base sm:text-lg">
                 Ready to code today?
               </span>
             </h3>
             <button
               onClick={() => setIsCreateModelShow(true)}
-              className="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium transition-all hover:bg-blue-700 shadow-md"
+              className="w-full md:w-auto px-5 py-2 bg-blue-600 text-white rounded-lg font-medium transition-all hover:bg-blue-700 shadow-md"
             >
               Create New Project<span className="text-white">➕</span>
             </button>
           </div>
+
           {/* Project List */}
-          <div className="projects px-10 md:px-20 mt-6 pb-10">
+          <div className="projects px-6 sm:px-10 md:px-20 mt-6 pb-10">
             {projects && projects.length > 0 ? (
               projects.map((project, index) => (
                 <div
                   key={index}
-                  className="project flex items-center justify-between p-4 bg-white text-black border border-gray-200 rounded-lg shadow-sm mb-4 hover:shadow-lg transition-all"
+                  className="project flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white text-black border border-gray-200 rounded-lg shadow-sm mb-4 hover:shadow-lg transition-all gap-4"
                 >
                   {/* Project Info */}
                   <div
                     onClick={() => navigate("/editior/" + project._id)}
-                    className="flex w-full items-center gap-4 cursor-pointer"
+                    className="flex flex-1 items-center gap-4 cursor-pointer"
                   >
                     {/* Project Language Icon */}
                     <img
-                      className="w-20 h-16 object-cover rounded-md"
+                      className="w-16 sm:w-20 h-14 sm:h-16 object-cover rounded-md"
                       src={
                         project.projLanguage === "python"
                           ? "https://images.ctfassets.net/em6l9zw4tzag/oVfiswjNH7DuCb7qGEBPK/b391db3a1d0d3290b96ce7f6aacb32b0/python.png"
@@ -259,7 +257,9 @@ const Home = () => {
 
                     {/* Project Name & Date */}
                     <div>
-                      <h3 className="text-lg font-semibold">{project.name}</h3>
+                      <h3 className="text-base sm:text-lg font-semibold">
+                        {project.name}
+                      </h3>
                       <p className="text-sm text-gray-500">
                         Created on: {new Date(project.date).toDateString()}
                       </p>
@@ -267,12 +267,12 @@ const Home = () => {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
                     <button
                       className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium transition-all hover:bg-blue-600 shadow"
                       onClick={() => {
                         setIsEditModelShow(true);
-                        setEditProjId(project._id);
+                        setEditProjId(project._id); // Set the project id here
                         setName(project.name);
                       }}
                     >
@@ -303,9 +303,9 @@ const Home = () => {
                   setName("");
                 }
               }}
-              className="modalContainer flex items-center justify-center fixed inset-0 bg-black bg-opacity-50"
+              className="modalContainer flex items-center justify-center fixed inset-0 bg-black bg-opacity-50 px-4"
             >
-              <div className="modalBox p-6 w-96 bg-white rounded-xl shadow-lg">
+              <div className="modalBox p-6 w-full max-w-md bg-white rounded-xl shadow-lg">
                 <h3 className="text-lg font-semibold text-center mb-4">
                   Create Project
                 </h3>
@@ -328,10 +328,15 @@ const Home = () => {
                       Selected Language: {selectedLanguage.label}
                     </p>
                     <button
-                      onClick={createProj}
-                      className="w-full mt-3 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-all"
+                      onClick={async () => {
+                        setIsCreateLoading(true);
+                        await createProj();
+                        setIsCreateLoading(false);
+                      }}
+                      className="w-full mt-3 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-all flex items-center justify-center"
+                      disabled={isCreateLoading}
                     >
-                      ✅ Create
+                      {isCreateLoading ? <Spinner /> : "✅ Create"}
                     </button>
                   </>
                 )}
@@ -348,9 +353,9 @@ const Home = () => {
                   setName("");
                 }
               }}
-              className="modalContainer flex items-center justify-center fixed inset-0 bg-black bg-opacity-50"
+              className="modalContainer flex items-center justify-center fixed inset-0 bg-black bg-opacity-50 px-4"
             >
-              <div className="modalBox p-6 w-96 bg-white rounded-xl shadow-lg">
+              <div className="modalBox p-6 w-full max-w-md bg-white rounded-xl shadow-lg">
                 <h3 className="text-lg font-semibold text-center mb-4">
                   Update Project
                 </h3>
@@ -362,10 +367,15 @@ const Home = () => {
                   className="w-full p-2 border rounded-md mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
-                  onClick={updateProj}
-                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-all"
+                  onClick={async () => {
+                    setIsUpdateLoading(true);
+                    await updateProj();
+                    setIsUpdateLoading(false);
+                  }}
+                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-all flex items-center justify-center"
+                  disabled={isUpdateLoading}
                 >
-                  🔄Update
+                  {isUpdateLoading ? <Spinner /> : "🔄Update"}
                 </button>
               </div>
             </div>
@@ -373,8 +383,8 @@ const Home = () => {
         </>
       ) : (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-6">
-          <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-200 text-center max-w-md">
-            <h2 className="text-2xl font-semibold text-gray-800">
+          <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-200 text-center w-full max-w-md">
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
               Access Restricted
             </h2>
             <p className="text-gray-600 mt-2">
@@ -382,7 +392,7 @@ const Home = () => {
             </p>
             <button
               onClick={() => navigate("/login")}
-              className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium transition-all hover:bg-blue-700 shadow-md"
+              className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium transition-all hover:bg-blue-700 shadow-md w-full"
             >
               🔑 Log In / Sign up
             </button>

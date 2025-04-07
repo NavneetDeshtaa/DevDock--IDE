@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import Editor2 from "@monaco-editor/react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
-import { Play, Code, Loader2 } from "lucide-react";
+import { Play, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import EditorNavbar from "../components/EditorNavbar";
 
@@ -11,11 +11,21 @@ const Editor = () => {
   const [editorWidth, setEditorWidth] = useState(50);
   const [isRunning, setIsRunning] = useState(false);
   const [output, setOutput] = useState("");
+  const [animatedOutput, setAnimatedOutput] = useState("");
   const [error, setError] = useState(false);
   const [data, setData] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [currentView, setCurrentView] = useState("editor"); // "editor" or "output" for mobile toggle
 
   const { id } = useParams();
   const { api_base_url } = useContext(AppContext);
+
+  // Responsive detection for mobile screens.
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -46,7 +56,7 @@ const Editor = () => {
     fetchProject();
   }, [id, api_base_url]);
 
-
+  // Save function to be passed to the navbar.
   const saveProject = useCallback(() => {
     if (!code) return;
 
@@ -69,19 +79,6 @@ const Editor = () => {
         toast.error("Failed to save the project.");
       });
   }, [code, id, api_base_url]);
-
-  useEffect(() => {
-    const handleSaveShortcut = (e) => {
-      if (e.ctrlKey && e.key === "s") {
-        e.preventDefault();
-        saveProject();
-      }
-    };
-
-    window.addEventListener("keydown", handleSaveShortcut);
-    return () => window.removeEventListener("keydown", handleSaveShortcut);
-  }, [saveProject]);
-
 
   const runProject = async () => {
     if (!data?.projLanguage || !data?.version) {
@@ -107,7 +104,9 @@ const Editor = () => {
       });
 
       const result = await response.json();
-      setOutput(result.run.output || "Execution completed with no output.");
+      const finalOutput =
+        result.run.output || "Execution completed with no output.";
+      setOutput(finalOutput);
       setError(result.run.code === 1);
     } catch (err) {
       console.error("Error running project:", err);
@@ -116,6 +115,21 @@ const Editor = () => {
     }
     setIsRunning(false);
   };
+
+  // Animate the output display (typing effect) when output changes.
+  useEffect(() => {
+    let index = 0;
+    setAnimatedOutput("");
+    const interval = setInterval(() => {
+      if (index < output.length) {
+        setAnimatedOutput((prev) => prev + output.charAt(index));
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [output]);
 
   const getFileExtension = (language) => {
     const extensions = {
@@ -131,94 +145,148 @@ const Editor = () => {
 
   return (
     <>
-      <EditorNavbar projectName={data?.name} editorContent={code} />
-      <div
-        className="flex items-center bg-gray-100"
-        style={{ height: "calc(100vh - 90px)" }}
-      >
-     
+      <EditorNavbar
+        projectName={data?.name}
+        editorContent={code}
+        isMobile={isMobile}
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+        saveProjectCallback={saveProject}
+      />
+
+      {isMobile ? (
+        // On mobile, show only the selected view.
+        <div className="bg-gray-100" style={{ height: "calc(100vh - 64px)" }}>
+          {currentView === "editor" ? (
+            <div className="h-full p-4 bg-white m-4 rounded-lg shadow border border-gray-300">
+              <div className="flex items-center justify-center pb-4 border-b border-gray-300">
+                <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                  Code Editor
+                </h2>
+              </div>
+              <Editor2
+                onChange={(newCode) => setCode(newCode || "")}
+                theme="light"
+                height="calc(100% - 50px)"
+                width="100%"
+                language={data?.projLanguage}
+                value={code}
+              />
+            </div>
+          ) : (
+            <div className="h-full p-4 bg-white m-4 rounded-lg shadow border border-gray-300 flex flex-col">
+              <div className="flex items-center justify-between pb-4 border-b border-gray-300">
+                <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                  Output
+                </h2>
+                <button
+                  className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md shadow transition-all hover:bg-blue-700"
+                  onClick={runProject}
+                  disabled={isRunning}
+                >
+                  {isRunning ? (
+                    <Loader2 className="animate-spin" size={18} />
+                  ) : (
+                    <Play size={18} />
+                  )}
+                  Run
+                </button>
+              </div>
+              <pre
+                className={`w-full mt-4 p-5 rounded-lg bg-gray-100 border border-gray-300 text-sm overflow-auto ${
+                  error ? "text-red-500" : "text-gray-800"
+                }`}
+                style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+              >
+                {animatedOutput || "Your output will appear here..."}
+              </pre>
+            </div>
+          )}
+        </div>
+      ) : (
+        // Desktop view: show both editor and output side-by-side with draggable divider.
         <div
-          className="h-full p-6 bg-white rounded-lg shadow-lg border border-gray-300"
-          style={{ width: `${editorWidth}%` }}
+          className="flex bg-gray-100"
+          style={{ height: "calc(100vh - 64px)" }}
         >
-          <div className="flex items-center justify-between pb-4 border-b border-gray-300">
-            <div className="flex-grow flex justify-center">
+          <div
+            className="h-full p-6 bg-white rounded-lg shadow border border-gray-300"
+            style={{ width: `${editorWidth}%` }}
+          >
+            <div className="flex items-center justify-center pb-4 border-b border-gray-300">
               <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-                <Code size={20} /> Code Editor
+                Code Editor
               </h2>
             </div>
+            <Editor2
+              onChange={(newCode) => setCode(newCode || "")}
+              theme="light"
+              height="calc(100% - 50px)"
+              width="100%"
+              language={data?.projLanguage}
+              value={code}
+            />
           </div>
 
-          <Editor2
-            onChange={(newCode) => setCode(newCode || "")}
-            theme="light"
-            height="100%"
-            width="100%"
-            language={data?.projLanguage}
-            value={code}
-          />
-        </div>
+          <div
+            className="w-2 h-full bg-gray-400 cursor-col-resize"
+            onMouseDown={(e) => {
+              const startX = e.clientX;
+              const startWidth = editorWidth;
+              const onMouseMove = (e) => {
+                const newWidth = Math.max(
+                  20,
+                  Math.min(
+                    80,
+                    startWidth +
+                      ((e.clientX - startX) / window.innerWidth) * 100
+                  )
+                );
+                setEditorWidth(newWidth);
+              };
 
-    
-        <div
-          className="w-2 h-full bg-gray-400 cursor-col-resize"
-          onMouseDown={(e) => {
-            const startX = e.clientX;
-            const startWidth = editorWidth;
+              const onMouseUp = () => {
+                window.removeEventListener("mousemove", onMouseMove);
+                window.removeEventListener("mouseup", onMouseUp);
+              };
 
-            const onMouseMove = (e) => {
-              const newWidth = Math.max(
-                20,
-                Math.min(
-                  80,
-                  startWidth + ((e.clientX - startX) / window.innerWidth) * 100
-                )
-              );
-              setEditorWidth(newWidth);
-            };
+              window.addEventListener("mousemove", onMouseMove);
+              window.addEventListener("mouseup", onMouseUp);
+            }}
+          ></div>
 
-            const onMouseUp = () => {
-              window.removeEventListener("mousemove", onMouseMove);
-              window.removeEventListener("mouseup", onMouseUp);
-            };
-
-            window.addEventListener("mousemove", onMouseMove);
-            window.addEventListener("mouseup", onMouseUp);
-          }}
-        ></div>
-
-    
-        <div
-          className="h-full p-6 bg-white rounded-lg shadow-lg border border-gray-300"
-          style={{ width: `${100 - editorWidth}%` }}
-        >
-          <div className="flex pb-4 border-b border-gray-300 items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-              <Play size={20} /> Output
-            </h2>
-            <button
-              className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md shadow-md transition-all hover:bg-blue-700"
-              onClick={runProject}
-              disabled={isRunning}
-            >
-              {isRunning ? (
-                <Loader2 className="animate-spin" size={18} />
-              ) : (
-                <Play size={18} />
-              )}{" "}
-              Run
-            </button>
-          </div>
-          <pre
-            className={`w-full h-full mt-4 p-5 rounded-lg bg-gray-100 border border-gray-300 text-sm overflow-auto ${
-              error ? "text-red-500" : "text-gray-800"
-            }`}
-            style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+          <div
+            className="h-full p-6 bg-white rounded-lg shadow border border-gray-300"
+            style={{ width: `${100 - editorWidth}%` }}
           >
-            {output || "Your output will appear here..."}
-          </pre>
+            <div className="flex items-center justify-between pb-4 border-b border-gray-300">
+              <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                Output
+              </h2>
+              <button
+                className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md shadow transition-all hover:bg-blue-700"
+                onClick={runProject}
+                disabled={isRunning}
+              >
+                {isRunning ? (
+                  <Loader2 className="animate-spin" size={18} />
+                ) : (
+                  <Play size={18} />
+                )}
+                Run
+              </button>
+            </div>
+            <pre
+              className={`w-full mt-4 p-5 rounded-lg bg-gray-100 border border-gray-300 text-sm overflow-auto ${
+                error ? "text-red-500" : "text-gray-800"
+              }`}
+              style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+            >
+              {animatedOutput || "Your output will appear here..."}
+            </pre>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
