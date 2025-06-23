@@ -20,7 +20,7 @@ const EditorNavbar = ({
   const [isSaved, setIsSaved] = useState(false);
   const [lastSavedContent, setLastSavedContent] = useState(editorContent);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [modalSaving, setModalSaving] = useState(false); // Separate spinner for modal save button
+  const [modalSaving, setModalSaving] = useState(false); 
 
   useEffect(() => {
     if (editorContent !== lastSavedContent) {
