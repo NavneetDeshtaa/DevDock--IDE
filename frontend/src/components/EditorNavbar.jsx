@@ -178,5 +178,4 @@ const EditorNavbar = ({
     </>
   );
 };
-
 export default EditorNavbar;
