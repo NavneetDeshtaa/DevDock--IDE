@@ -15,7 +15,6 @@ const EditorNavbar = ({
   saveProjectCallback,
 }) => {
   const navigate = useNavigate();
-
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [lastSavedContent, setLastSavedContent] = useState(editorContent);
