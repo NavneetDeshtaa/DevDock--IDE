@@ -74,7 +74,7 @@ const EditorNavbar = ({
       await saveProjectCallback();
       setLastSavedContent(editorContent);
       setIsSaved(true);
-      setShowConfirmModal(false); // Close modal after saving
+      setShowConfirmModal(false); 
     } catch (error) {
       alert("Error saving the project.");
       console.error(error);
