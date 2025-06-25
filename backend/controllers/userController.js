@@ -86,7 +86,6 @@ exports.signup = async (req, res) => {
   try {
     let { email, pwd, fullName } = req.body;
 
-    // Check if the email already exists
     let existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ success: false, msg: "Email already exists" });
