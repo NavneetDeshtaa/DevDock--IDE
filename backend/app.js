@@ -3,7 +3,6 @@ var path = require('path');
 // var cookieParser = require('cookie-parser');
 var cors = require('cors');
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 const connectDB = require('./config/db');
 
 connectDB();
@@ -38,7 +37,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 app.use('/api', indexRouter);
-app.use('/users', usersRouter);
 
 app.get('/', (req, res) => res.send('API Working'));
 
