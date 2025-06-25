@@ -51,13 +51,10 @@ exports.sendOtp = async (req, res) => {
 exports.verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
-    console.log('1. Received request with:', { email, otp });
 
     const storedOtp = otpStore.get(email);
-    console.log('2. Retrieved from otpStore:', storedOtp);
 
     if (!storedOtp) {
-      console.log('3a. No stored OTP found');
       return res.status(400).json({ success: false, msg: "No OTP found for this email" });
     }
 
@@ -68,23 +65,16 @@ exports.verifyOtp = async (req, res) => {
     });
 
     if (String(storedOtp.otp) !== String(otp)) {
-      console.log('4a. OTP mismatch');
       return res.status(400).json({ success: false, msg: "Invalid OTP" });
     }
 
-    console.log('4b. OTP matched, checking expiration');
     if (Date.now() > storedOtp.expiresAt) {
-      console.log('5a. OTP expired');
       return res.status(400).json({ success: false, msg: "OTP expired" });
     }
 
-    console.log('5b. OTP valid, updating user');
     await userModel.updateOne({ email }, { $set: { isVerified: true } });
-
-    console.log('6. Setting verification status in otpStore');
     otpStore.set(email, { verified: true });
-
-    console.log('7. Sending success response');
+    
     res.status(200).json({ success: true, msg: "Email verified successfully" });
   } catch (error) {
     console.error('Error in verification:', error);
