@@ -49,5 +49,4 @@ const RouteHandler = () => {
     </Routes>
   );
 };
-
 export default App;
