@@ -45,7 +45,6 @@ function Contact() {
       )
       .then(
         (response) => {
-          console.log("Email sent successfully:", response);
           setSuccessMessage("Your message has been sent successfully!");
           setFormData({ name: "", email: "", subject: "", message: "" });
         },
@@ -68,6 +67,7 @@ function Contact() {
     </header>
 
     <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 px-4 sm:px-6">
+    
       {/* Contact Details */}
       <div className="bg-white rounded-xl shadow-md p-6 sm:p-8">
         <h2 className="text-4xl sm:text-5xl font-semibold text-gray-900 mb-8">
