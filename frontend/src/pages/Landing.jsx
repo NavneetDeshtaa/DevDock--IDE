@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Code2,
@@ -21,11 +20,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 function Landing() {
-
   return (
     <>
       <Navbar />
       <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-purple-50 text-gray-800">
+        
         {/* Hero Section */}
         <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-24 pt-32 pb-20 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -95,22 +94,16 @@ function Landing() {
           </div>
           <div className="flex flex-wrap justify-center gap-6 sm:gap-10 animate-slide-in-slower">
             <Globe className="w-10 h-10 text-blue-600 animate-pulse-glow-slower" />
-            {[
-              "Python",
-              "JavaScript",
-              "Java",
-              "C++",
-              "Bash",
-              "PHP",
-              "Go",
-            ].map((lang) => (
-              <span
-                key={lang}
-                className="text-lg sm:text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-transform hover:scale-110"
-              >
-                {lang}
-              </span>
-            ))}
+            {["Python", "JavaScript", "Java", "C++", "Bash", "PHP", "Go"].map(
+              (lang) => (
+                <span
+                  key={lang}
+                  className="text-lg sm:text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-transform hover:scale-110"
+                >
+                  {lang}
+                </span>
+              )
+            )}
           </div>
         </div>
 
@@ -214,7 +207,10 @@ function Landing() {
         </div>
 
         {/* Code Preview */}
-        <div id="preview" className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-24 py-20">
+        <div
+          id="preview"
+          className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-24 py-20"
+        >
           <div>
             <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 overflow-hidden shadow-2xl min-h-[160px]">
               <div className="flex items-center space-x-2 mb-4">
