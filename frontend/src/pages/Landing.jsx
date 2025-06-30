@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Links } from "react-router-dom";
 import {
   Code2,
   Users,
   Lock,
   Download,
-  Play,
   Globe,
   Cpu,
   CheckCircle,
   GitBranch,
   Terminal,
   Sparkles,
-  Rocket,
   Mail,
-  Home,
-  FolderKanban,
-  PhoneCall,
 } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
