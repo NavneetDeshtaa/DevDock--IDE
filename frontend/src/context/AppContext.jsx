@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export const AppContext = createContext();
+export const AppContext  = createContext();   // AppContext  is my context object 
 
 const AppContextProvider = ({ children }) => {
   const api_base_url = import.meta.env.VITE_BACKEND_URL;
