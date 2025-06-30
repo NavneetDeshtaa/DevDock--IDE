@@ -1,5 +1,5 @@
 import { Code2, Terminal, Monitor } from "lucide-react";
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
