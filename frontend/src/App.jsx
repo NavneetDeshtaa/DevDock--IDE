@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -25,14 +24,12 @@ const App = () => {
         theme="light"
         toastClassName="text-lg font-medium font-sans text-gray-800"
       />
-
       <RouteHandler />
     </BrowserRouter>
   );
 };
 
 const RouteHandler = () => {
-  const isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) || false;
 
   return (
     <Routes>
@@ -40,10 +37,7 @@ const RouteHandler = () => {
       <Route path="/projects" element={<Home/>} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
-      <Route
-        path="/editior/:id"
-        element={isLoggedIn ? <Editor /> : <Navigate to="/login" />}
-      />
+      <Route path="/editior/:id" element={<Editor /> }/>
       <Route path="/contact" element={<Contact/>} />
       <Route path="*" element={<NoPage />} />
     </Routes>
