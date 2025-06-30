@@ -142,6 +142,7 @@ function Signup() {
 
       {/* Sign Up Form */}
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg p-6 sm:p-10 mt-4 sm:mt-6">
+        
         <div className="text-center mb-6">
           <div className="flex justify-center mb-4">
             <Code2 size={36} className="text-blue-600 sm:size-10" />
