@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {
   Mail,
   MapPin,
@@ -7,16 +6,14 @@ import {
   Github,
   Linkedin,
   Twitter,
-  MessageSquare,
   Clock,
   Send,
 } from "lucide-react";
-import emailjs from "emailjs-com";
 
+import emailjs from "emailjs-com";
 import Navbar from "../components/Navbar";
 
 function Contact() {
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
