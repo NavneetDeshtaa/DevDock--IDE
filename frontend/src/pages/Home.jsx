@@ -208,7 +208,6 @@ const Home = () => {
     }
   };
 
-  
   return (
     <>
       <Navbar />
