@@ -15,7 +15,7 @@ const Editor = () => {
   const [error, setError] = useState(false);
   const [data, setData] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [currentView, setCurrentView] = useState("editor"); // "editor" or "output" for mobile toggle
+  const [currentView, setCurrentView] = useState("editor");
 
   const { id } = useParams();
   const { api_base_url } = useContext(AppContext);
