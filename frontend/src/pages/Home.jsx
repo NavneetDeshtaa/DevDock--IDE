@@ -107,17 +107,19 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Promise.all([getProjects(), getRunTimes()]);
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      if (!isLoggedIn) return;
+      await Promise.all([getProjects(), getRunTimes()]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
+
 
   const createProj = async () => {
     try {

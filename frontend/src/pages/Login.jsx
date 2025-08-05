@@ -19,11 +19,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${api_base_url}/api/login`,
-        { email, pwd },
-        { headers: { "Content-Type": "application/json" } }
-      );
+      const response = await axios.post(`${api_base_url}/api/login`,{ email, pwd },{ headers: { "Content-Type": "application/json" }});
 
       if (response.data.success) {
         localStorage.setItem("token", response.data.token);
