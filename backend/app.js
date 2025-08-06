@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
 
 const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? ['https://dev-dock-ide-murex.vercel.app']
+  ? ['https://dev-dock-ide-navneet-deshtas-projects.vercel.app']
   : ['http://localhost:5173', 'https://dev-dock-ide-murex.vercel.app'];
 
 app.use(cors({
