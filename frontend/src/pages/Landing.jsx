@@ -10,76 +10,170 @@ import {
   GitBranch,
   Terminal,
   Sparkles,
-  Mail,
+  Star,
+  Play,
+  Github,
+  Zap,
+  TrendingUp,
+  Rocket,
+  Smartphone,
 } from "lucide-react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import Navbar from "../components/Navbar";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 function Landing() {
+
+  const stats = [
+    {
+      label: "Active Developers",
+      value: "50+",
+      icon: <Users className="w-6 h-6" />,
+    },
+    {
+      label: "Projects Created",
+      value: "200+",
+      icon: <Code2 className="w-6 h-6" />,
+    },
+    {
+      label: "Lines of Code",
+      value: "10.9k+",
+      icon: <Terminal className="w-6 h-6" />,
+    },
+    { label: "Countries", value: "190+", icon: <Globe className="w-6 h-6" /> },
+  ];
+
   return (
     <>
       <Navbar />
       <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-purple-50 text-gray-800">
-        
         {/* Hero Section */}
-        <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-24 pt-32 pb-20 max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="text-left">
-              <h1 className="text-[clamp(2.5rem,8vw,4.5rem)] font-bold mb-6 gradient-text animate-gradient">
-                Code. Create.
-                <br />
-                Innovate.
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-10 typing-effect">
-                Experience a fast, intuitive, and professional code editing
-                platform.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/projects">
-                  <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold transition-transform hover:scale-105 hover:shadow-xl flex items-center space-x-2">
-                    <Terminal className="w-5 h-5" />
-                    <span> View Projects</span>
-                  </button>
-                </Link>
-                <Link to="/contact">
-                  <button className="bg-white text-blue-600 px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold border-2 border-blue-600 transition-all hover:bg-blue-50 flex items-center space-x-2">
-                    <Mail className="w-5 h-5" />
-                    <span>Contact Us</span>
-                  </button>
-                </Link>
+        <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-medium">
+                    <Star className="w-4 h-4 mr-2" />
+                    Trusted by 100+ developers
+                  </div>
+                  <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 leading-tight">
+                    Code Anytime,
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
+                      {" "}
+                      Anywhere
+                    </span>
+                  </h1>
+                  <p className="text-xl text-slate-600 leading-relaxed">
+                    The most powerful cloud-based IDE for modern development.
+                    Code, collaborate, and deploy from anywhere with our
+                    lightning-fast, secure platform.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link
+                    to="/projects"
+                    className="group bg-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-lg inline-block"
+                  >
+                    <div className="flex items-center justify-center space-x-2">
+                      <Play className="w-5 h-5" />
+                      <span>Start Coding Now</span>
+                    </div>
+                  </Link>
+
+                  <a
+                    href="https://github.com/NavneetDeshtaa/DevDock--IDE"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group border-2 border-slate-300 text-slate-700 px-8 py-4 rounded-xl font-semibold hover:border-indigo-300 hover:text-indigo-600 transition-all inline-block"
+                  >
+                    <div className="flex items-center justify-center space-x-2">
+                      <Github className="w-5 h-5" />
+                      <span>View on GitHub</span>
+                    </div>
+                  </a>
+                </div>
+
+                <div className="flex items-center space-x-6 text-sm text-slate-500">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span>99.9% Uptime</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Zap className="w-4 h-4" />
+                    <span>5x Faster</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-1">
+                  <div className="bg-slate-900 rounded-xl overflow-hidden">
+                    <div className="flex items-center space-x-2 px-4 py-3 bg-slate-800">
+                      <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                      <div className="flex-1 text-center">
+                        <span className="text-slate-400 text-sm">
+                          CodeIDE - main.tsx
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-6 font-mono text-sm">
+                      <div className="space-y-2">
+                        <div className="text-purple-400">
+                          import <span className="text-blue-400">React</span>{" "}
+                          from <span className="text-green-400">'react'</span>;
+                        </div>
+                        <div className="text-purple-400">
+                          import{" "}
+                          <span className="text-blue-400">
+                            &lbrace; useState &rbrace;
+                          </span>{" "}
+                          from <span className="text-green-400">'react'</span>;
+                        </div>
+                        <div className="text-slate-500">
+                          // AI-powered suggestions
+                        </div>
+                        <div className="text-blue-400">
+                          function <span className="text-yellow-400">App</span>
+                          () &lbrace;
+                        </div>
+                        <div className="ml-4 text-purple-400">
+                          const [<span className="text-blue-400">count</span>,{" "}
+                          <span className="text-blue-400">setCount</span>] ={" "}
+                          <span className="text-yellow-400">useState</span>(
+                          <span className="text-orange-400">0</span>);
+                        </div>
+                        <div className="ml-4 text-purple-400">return (</div>
+                        <div className="ml-8 text-green-400">
+                          &lt;div className=
+                          <span className="text-green-400">"app"</span>&gt;
+                        </div>
+                        <div className="ml-12 text-green-400">
+                          &lt;h1&gt;Hello CodeIDE!&lt;/h1&gt;
+                        </div>
+                        <div className="ml-8 text-green-400">&lt;/div&gt;</div>
+                        <div className="ml-4 text-purple-400">);</div>
+                        <div className="text-blue-400">&rbrace;</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute -top-4 -right-4 bg-white rounded-lg shadow-lg p-3 border">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-sm text-slate-600">
+                      Live collaboration soon
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="relative">
-              <Swiper
-                modules={[Autoplay, Navigation, Pagination]}
-                spaceBetween={30}
-                slidesPerView={1}
-                navigation
-                pagination={{ clickable: true }}
-                autoplay={{ delay: 3000 }}
-                className="rounded-xl shadow-2xl"
-              >
-                {[
-                  "photo-1461749280684-dccba630e2f6",
-                  "photo-1555066931-4365d14bab8c",
-                  "photo-1542831371-29b0f74f9713",
-                ].map((id, idx) => (
-                  <SwiperSlide key={idx}>
-                    <img
-                      src={`https://images.unsplash.com/${id}`}
-                      alt="Code Editor"
-                      className="w-full h-auto max-h-[400px] object-cover rounded-xl"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
           </div>
-        </div>
+        </section>
 
         {/* Language Banner */}
         <div className="bg-gradient-to-r from-blue-100 via-purple-50 to-blue-100 py-16 px-4 sm:px-8 animate-gradient-slower">
@@ -170,95 +264,91 @@ function Landing() {
               </div>
             ))}
           </div>
+
+          <div className="mt-20 text-center">
+            <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl px-8 py-4 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <Smartphone className="w-6 h-6" />
+              <span className="font-semibold">
+                Available on all devices - Desktop, Mobile & Tablet
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Stats Section */}
-        <div
-          id="stats"
-          className="bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50 py-20 px-4 sm:px-8 md:px-24 animate-gradient"
+        {/* Community Section */}
+        <section
+          id="community"
+          className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600"
         >
-          <div className="container mx-auto">
-            <div className="text-center mb-16">
-              <div className="flex justify-center items-center gap-4 mb-6">
-                <Users className="w-8 h-8 text-blue-600 animate-pulse-glow" />
-                <h2 className="text-4xl sm:text-6xl font-bold gradient-text">
-                  Growing Community
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                  { value: "10+", label: "Active Users" },
-                  { value: "35+", label: "Projects Created" },
-                  { value: "7", label: "Programming Languages" },
-                ].map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="feature-card bg-white p-6 sm:p-8 rounded-2xl shadow-lg"
-                  >
-                    <h3 className="text-4xl sm:text-6xl font-bold gradient-text mb-2">
-                      {stat.value}
-                    </h3>
-                    <p className="text-gray-600 text-xl">{stat.label}</p>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center space-y-4 mb-16">
+              <h2 className="text-3xl lg:text-4xl font-bold text-white">
+                Join Our Growing Community
+              </h2>
+              <p className="text-xl text-indigo-100 max-w-3xl mx-auto">
+                Be part of a thriving ecosystem of developers building the
+                future of software development.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              {stats.map((stat, index) => (
+                <div key={stat.label} className="text-center space-y-3">
+                  <div className="inline-flex p-4 bg-white/10 rounded-xl text-white">
+                    {stat.icon}
                   </div>
-                ))}
+                  <div className="space-y-1">
+                    <div className="text-3xl lg:text-4xl font-bold text-white">
+                      {stat.value}
+                    </div>
+                    <div className="text-indigo-100">{stat.label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center mt-16">
+              <div className="inline-flex items-center space-x-2 bg-white/10 rounded-full px-6 py-3 text-white">
+                <TrendingUp className="w-5 h-5" />
+                <span className="font-medium">
+                  Growing 25% month over month
+                </span>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Code Preview */}
-        <div
-          id="preview"
-          className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-24 py-20"
-        >
-          <div>
-            <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 overflow-hidden shadow-2xl min-h-[160px]">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              </div>
-              <pre className="text-xs sm:text-sm md:text-base text-gray-300 overflow-x-auto typing-effect">
-                <code>{`// Real-time collaboration example
-class CodeEditor {
-  constructor() {
-    this.language = "python";
-    this.theme = "monokai";
-    this.autoSave = true;
-  }
-
-  async compile() {
-    try {
-      const result = await this.executeCode();
-      this.displayOutput(result);
-    } catch (error) {
-      this.showError(error);
-    }
-  }
-}
-
-const editor = new CodeEditor();
-editor.compile();`}</code>
-              </pre>
-            </div>
-          </div>
-        </div>
+        </section>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20 px-4 sm:px-6 text-center animate-gradient">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-            Ready to Transform Your Coding Experience?
-          </h2>
-          <p className="text-sm sm:text-base md:text-xl mb-10 max-w-2xl mx-auto">
-            Join our innovative platform and experience the future of
-            collaborative development.
-          </p>
-          <Link to="/projects">
-            <button className="bg-white text-white bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 px-6 sm:px-8 py-3 rounded-full font-semibold border-2 border-white hover:scale-105 hover:shadow-xl transition-transform">
-              Start Coding Now
-            </button>
-          </Link>
-        </div>
+        <section className="py-20 bg-slate-900">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h2 className="text-3xl lg:text-4xl font-bold text-white">
+                  Ready to Transform Your Development Experience?
+                </h2>
+                <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+                  Join millions of developers who have already made the switch
+                  to cloud-based development.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  to="/projects"
+                  className="group bg-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-lg inline-block"
+                >
+                  <div className="flex items-center justify-center space-x-2">
+                    <Rocket className="w-5 h-5" />
+                    <span>Start Building Today</span>
+                  </div>
+                </Link>
+              </div>
+              <div className="text-md text-slate-400">
+                No credit card required • Free for personal projects
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );
