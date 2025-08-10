@@ -22,7 +22,7 @@ download functionality, allowing users to code in up to 7 programming languages.
 
 ## Demo
 
-https://dev-dock-ide-murex.vercel.app
+https://dev-dock-ide-navneet-deshtas-projects.vercel.app
     
 ## Run Locally
 
