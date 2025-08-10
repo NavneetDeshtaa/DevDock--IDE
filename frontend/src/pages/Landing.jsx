@@ -243,17 +243,18 @@ function Landing() {
           </div>
         </section>
 
-        {/* Features */}
+        {/* Features Section */}
         <div
           id="features"
           className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-24 py-20 max-w-8xl"
         >
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-blue-800 mb-6 flex justify-center items-center gap-3">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-blue-800 mb-8 flex justify-center items-center gap-3 select-none">
               <CheckCircle className="text-blue-800" size={30} />
               What You Get
             </h2>
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
@@ -261,54 +262,76 @@ function Landing() {
                 title: "Multi-Language Support",
                 description:
                   "Write and execute code in 7 languages with real-time syntax highlighting.",
+                color: "text-indigo-600",
+                svgSrc: "/languages.svg", 
               },
               {
                 icon: Lock,
                 title: "Secure Authentication",
                 description:
                   "Enhanced security with OTP-based email verification.",
+                color: "text-purple-600",
+                svgSrc: "/secure.svg",
               },
               {
                 icon: Download,
                 title: "Project Management",
                 description:
                   "Create, save, and download your projects with automated backups.",
+                color: "text-green-600",
+                svgSrc: "/project.svg",
               },
               {
                 icon: GitBranch,
                 title: "Version Control",
                 description:
                   "Built-in version control with visual diff viewer and branching.",
+                color: "text-pink-600",
+                svgSrc: "/version.svg",
               },
               {
                 icon: Cpu,
                 title: "Real-Time Compilation",
                 description: "Instant compilation with optimization tips.",
+                color: "text-yellow-600",
+                svgSrc: "/realtime.svg",
               },
               {
                 icon: Sparkles,
                 title: "AI Suggestions (SOON..)",
                 description:
                   "Smart code completion and error detection with ML.",
+                color: "text-indigo-500",
+                svgSrc: "/ai.svg",
               },
-            ].map((feature) => (
+            ].map(({ icon: Icon, title, description, color, svgSrc }) => (
               <div
-                key={feature.title}
-                className="feature-card bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-100"
+                key={title}
+                className="relative bg-white p-6 rounded-xl border border-gray-200 shadow-sm
+          hover:shadow-md hover:-translate-y-1 hover:border-blue-400 transition-transform transition-shadow duration-300 cursor-pointer overflow-hidden"
               >
-                <feature.icon className="w-10 h-10 text-blue-600 mb-6 animate-pulse-glow" />
-                <h3 className="text-lg sm:text-xl font-semibold mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 text-sm sm:text-base">
-                  {feature.description}
-                </p>
+                {/* Background SVG image */}
+                {svgSrc && (
+                  <img
+                    src={svgSrc}
+                    alt={`${title} background`}
+                    className="absolute top-4 right-4 w-16 h-16 opacity-10 pointer-events-none object-contain"
+                  />
+                )}
+
+                <Icon
+                  className={`relative w-10 h-10 mb-4 transition-colors duration-300 ${color}`}
+                />
+
+                <h3 className="relative text-lg font-semibold mb-2">{title}</h3>
+
+                <p className="relative text-gray-600 text-sm">{description}</p>
               </div>
             ))}
           </div>
 
           <div className="mt-20 text-center">
-            <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl px-8 py-4 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+            <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl px-8 py-4 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer select-none">
               <Smartphone className="w-6 h-6" />
               <span className="font-semibold">
                 Available on all devices - Desktop, Mobile & Tablet
