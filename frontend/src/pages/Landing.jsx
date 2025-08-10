@@ -24,7 +24,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 function Landing() {
-
   const stats = [
     {
       label: "Active Developers",
@@ -175,31 +174,74 @@ function Landing() {
           </div>
         </section>
 
-        {/* Language Banner */}
-        <div className="bg-gradient-to-r from-blue-100 via-purple-50 to-blue-100 py-16 px-4 sm:px-8 animate-gradient-slower">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600 mb-4">
-              Code in Your Favourite Languages
-            </h2>
-            <p className="text-sm sm:text-lg text-gray-600 mt-2">
-              DevDock supports a variety of languages to help you write, run,
-              and debug seamlessly.
-            </p>
+        {/* Language Section */}
+        <section className="py-20 px-6 sm:px-12 lg:px-24 bg-gray-50">
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Illustration Container */}
+            <div className="flex justify-center lg:justify-end">
+              <div className="w-full max-w-lg aspect-[4/3] rounded-2xl overflow-hidden shadow-lg cursor-pointer transition-transform duration-500 hover:scale-105">
+                <img
+                  src="/language.svg"
+                  alt="Programming illustration"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            {/* Right Content */}
+            <div className="space-y-10">
+              <div>
+                <h2 className="text-5xl font-extrabold text-gray-900">
+                  Code in Your Favorite Languages
+                </h2>
+                <p className="mt-5 text-lg text-gray-600 max-w-lg leading-relaxed">
+                  DevDock supports a wide range of popular programming
+                  languages, enabling you to write, test, and deploy your code
+                  effortlessly on our secure and fast cloud IDE platform.
+                </p>
+              </div>
+
+              {/* Language badges */}
+              <div className="flex flex-wrap gap-6 max-w-lg">
+                {[
+                  { name: "Python", color: "#3572A5" },
+                  {
+                    name: "JavaScript",
+                    color: "#F7DF1E",
+                    textColor: "text-black",
+                  },
+                  { name: "Java", color: "#b07219" },
+                  { name: "C++", color: "#004482" },
+                  { name: "Bash", color: "#89e051" },
+                  { name: "PHP", color: "#777bb3" },
+                  { name: "Go", color: "#00ADD8" },
+                  { name: "TypeScript", color: "#3178c6" },
+                ].map(({ name, color, textColor }) => (
+                  <div
+                    key={name}
+                    className={`flex items-center space-x-3 px-6 py-3 rounded-lg shadow-sm border border-gray-200 cursor-pointer select-none
+              hover:shadow-xl hover:scale-105 transition-transform duration-300`}
+                    title={name}
+                  >
+                    {/* Colored circle */}
+                    <span
+                      className="w-4 h-4 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: color }}
+                    ></span>
+                    <span
+                      className={`font-semibold text-lg ${
+                        textColor ? textColor : "text-gray-900"
+                      }`}
+                    >
+                      {name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-10 animate-slide-in-slower">
-            <Globe className="w-10 h-10 text-blue-600 animate-pulse-glow-slower" />
-            {["Python", "JavaScript", "Java", "C++", "Bash", "PHP", "Go"].map(
-              (lang) => (
-                <span
-                  key={lang}
-                  className="text-lg sm:text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-transform hover:scale-110"
-                >
-                  {lang}
-                </span>
-              )
-            )}
-          </div>
-        </div>
+        </section>
 
         {/* Features */}
         <div
