@@ -261,9 +261,9 @@ useEffect(() => {
                           : project.projLanguage === "c"
                           ? "https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png"
                           : project.projLanguage === "java"
-                          ? "https://static-00.iconduck.com/assets.00/java-icon-1511x2048-6ikx8301.png"
+                          ? "https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg"
                           : project.projLanguage === "bash"
-                          ? "https://w7.pngwing.com/pngs/48/567/png-transparent-bash-shell-script-command-line-interface-z-shell-shell-rectangle-logo-commandline-interface-thumbnail.png"
+                          ? "https://upload.wikimedia.org/wikipedia/commons/4/4b/Bash_Logo_Colored.svg"
                           : ""
                       }
                       alt="Project Language"
