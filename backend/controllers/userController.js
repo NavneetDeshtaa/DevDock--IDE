@@ -148,7 +148,7 @@ function getStartupCode(language) {
   } else if (language.toLowerCase() === "javascript") {
     return 'console.log("Hello World");';
   } else if (language.toLowerCase() === "cpp") {
-    return '#include <iostream>\n\nint main() {\n    std::cout << "Hello World" << std::endl;\n    return 0;\n}';
+    return '#include <bits/stdc++.h>\n\nint main() {\n    std::cout << "Hello World" << std::endl;\n    return 0;\n}';
   } else if (language.toLowerCase() === "c") {
     return '#include <stdio.h>\n\nint main() {\n    printf("Hello World\\n");\n    return 0;\n}';
   } else if (language.toLowerCase() === "go") {
