@@ -287,10 +287,10 @@ const Home = () => {
                 >
                   <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                 </svg>
-                <p className="text-gray-500 text-lg font-medium">
+                <p className="text-gray-500 text-xl font-medium">
                   No Projects Found!
                 </p>
-                <p className="text-gray-400 text-sm mb-4">
+                <p className="text-gray-400 text-lg mb-4">
                   Click the "Create New Project" button to get started 🚀
                 </p>
                 <button
