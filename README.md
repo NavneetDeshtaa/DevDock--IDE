@@ -5,6 +5,15 @@ A fully functional web-based IDE with support for real-time code editing, projec
 download functionality, allowing users to code in up to 7 programming languages.
 
 
+ ## Pull Prebuilt Images from Docker Hub - 
+
+  This project has been fully dockerized for easy deployment. If you don’t want to build locally, you can use the prebuilt images from Docker Hub:
+
+  - docker pull navneetdeshta/backend-devdock:latest
+  - docker pull navneetdeshta/frontend-devdock:latest
+  - docker pull mongo:6.0
+
+
 ## Features
 
 - User Authentication – Signup/Login with email verification
@@ -85,12 +94,3 @@ This project has been fully dockerized for easy deployment. There are three Dock
     - Start backend on port 3000
     - Start frontend on port 5173
     - Start MongoDB on port 27017
-   
-
- ## Pull Prebuilt Images from Docker Hub - 
-
-  If you don’t want to build locally, you can use the prebuilt images from Docker Hub:
-
-  - docker pull navneetdeshta/backend-devdock:latest
-  - docker pull navneetdeshta/frontend-devdock:latest
-  - docker pull mongo:6.0
