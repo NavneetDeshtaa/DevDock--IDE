@@ -62,3 +62,14 @@ To run this project, you will need to add the following environment variables to
 `EMAIL_USER=your_email@gmail.com`
 
 `EMAIL_PASS=your_email_password`
+
+
+## Run Locally with Docker
+
+This project has been fully dockerized for easy deployment. There are three Docker images:
+
+1.Backend: Node.js + Express API
+
+2.Frontend: Vite React app served via Nginx
+
+3.MongoDB: Official MongoDB image (or you can use cloud MongoDB)
