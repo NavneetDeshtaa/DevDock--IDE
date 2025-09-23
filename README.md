@@ -27,11 +27,6 @@ download functionality, allowing users to code in up to 7 programming languages.
 **Client:** React, JavaScript, TailwindCSS, File-Saver, jsZip
 
 **Server:** NodeMailer, otp-generator,Node, Jsonwebtokens, Bcrypt.Js
-
-
-## Demo
-
-https://dev-dock-ide-navneet-deshtas-projects.vercel.app
     
 ## Run Locally
 
