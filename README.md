@@ -5,6 +5,15 @@ A fully functional web-based IDE with support for real-time code editing, projec
 download functionality, allowing users to code in up to 7 programming languages.
 
 
+ ## Pull Prebuilt Images from Docker Hub - 
+
+  This project has been fully dockerized for easy deployment. If you don’t want to build locally, you can use the prebuilt images from Docker Hub:
+
+  - docker pull navneetdeshta/backend-devdock:latest
+  - docker pull navneetdeshta/frontend-devdock:latest
+  - docker pull mongo:6.0
+
+
 ## Features
 
 - User Authentication – Signup/Login with email verification
@@ -18,11 +27,6 @@ download functionality, allowing users to code in up to 7 programming languages.
 **Client:** React, JavaScript, TailwindCSS, File-Saver, jsZip
 
 **Server:** NodeMailer, otp-generator,Node, Jsonwebtokens, Bcrypt.Js
-
-
-## Demo
-
-https://dev-dock-ide-navneet-deshtas-projects.vercel.app
     
 ## Run Locally
 
@@ -62,3 +66,26 @@ To run this project, you will need to add the following environment variables to
 `EMAIL_USER=your_email@gmail.com`
 
 `EMAIL_PASS=your_email_password`
+
+
+## Run Locally with Docker
+
+This project has been fully dockerized for easy deployment. There are three Docker images:
+
+1.Backend: Node.js + Express API
+
+2.Frontend: Vite React app served via Nginx
+
+3.MongoDB: Official MongoDB image (or you can use cloud MongoDB)
+
+# Build and Run with Docker Compose
+
+ 1. Make sure Docker is installed and running.
+
+ 2. From the project root (where docker-compose.yml is located), run:  docker-compose up --build
+
+ 3. This will:
+    - Build the backend and frontend Docker images locally
+    - Start backend on port 3000
+    - Start frontend on port 5173
+    - Start MongoDB on port 27017
