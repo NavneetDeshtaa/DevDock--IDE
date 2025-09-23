@@ -73,3 +73,24 @@ This project has been fully dockerized for easy deployment. There are three Dock
 2.Frontend: Vite React app served via Nginx
 
 3.MongoDB: Official MongoDB image (or you can use cloud MongoDB)
+
+# Build and Run with Docker Compose
+
+ 1. Make sure Docker is installed and running.
+
+ 2. From the project root (where docker-compose.yml is located), run:  docker-compose up --build
+
+ 3. This will:
+    - Build the backend and frontend Docker images locally
+    - Start backend on port 3000
+    - Start frontend on port 5173
+    - Start MongoDB on port 27017
+   
+
+ ## Pull Prebuilt Images from Docker Hub - 
+
+  If you don’t want to build locally, you can use the prebuilt images from Docker Hub:
+
+  - docker pull navneetdeshta/backend-devdock:latest
+  - docker pull navneetdeshta/frontend-devdock:latest
+  - docker pull mongo:6.0
