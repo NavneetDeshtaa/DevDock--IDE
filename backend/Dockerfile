@@ -10,7 +10,7 @@ COPY package*.json ./
 # 4. Install only production dependencies
 RUN npm install --only=production
 
-# 5. Copy rest of backend source code
+# 5. Copy rest of backend source code to the container
 COPY . .
 
 # 6. Expose the port your Express app runs on
